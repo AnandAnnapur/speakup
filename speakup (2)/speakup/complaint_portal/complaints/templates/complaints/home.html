@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Portal</title>
+</head>
+<body>
+    <h1>Welcome to the Complaint Portal</h1>
+    <select onchange="if(this.value) window.location.href=this.value;">
+        <option value="">-- Select Option --</option>
+        <option value="{% url 'create_complaint' %}">Create Complaint</option>
+        <option value="{% url 'check_status' %}">Check Complaint Status</option>
+    </select>
+</body>
+</html>

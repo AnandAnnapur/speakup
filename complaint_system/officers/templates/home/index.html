@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anonymous Complaint System</title>
+    <link rel="stylesheet" href="{% static 'officers/styles.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'officers/logo.png' %}" alt="Logo" onerror="this.onerror=null;this.src='https://placehold.co/50x50/cccccc/000000?text=LOGO';" />
+        </div>
+        <div class="header-buttons">
+            <a href="{% url 'officers:complaint_dashboard' %}" class="header-btn">Complaint Box</a>
+            <div class="dropdown">
+                <button class="dropbtn">Anonymous Complaint &#9662;</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'officers:create_complaint' %}">Raise a Complaint</a>
+                    <a href="{% url 'officers:check_status' %}">Check Status</a>
+                    <a href="{% url 'officers:officer_login' %}">Admin Login</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-content">
+            <h1 class="page-title">Anonymous Complaint Page</h1>
+            <div class="priority-box">
+                <p>Confidentiality, Integrity, and Availability are our top most priorities</p>
+            </div>
+            <p class="secure-msg">"YOUR DATA IS SECURE AND ALSO ENCRYPTED WITH US"</p>
+            <div class="scratch-line"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="{% static 'officers/logo.png' %}" alt="Logo" onerror="this.onerror=null;this.src='https://placehold.co/40x40/cccccc/000000?text=LOGO';" />
+        </div>
+        <div class="footer-text">
+            <p>&copy; 2025 Anonymous Complaint System | Bangalore</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'officers/script.js' %}"></script>
+</body>
+</html>
