@@ -1,0 +1,150 @@
+
+{% extends 'officers/base.html' %}
+
+{% block title %}Complaint Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Complaint Dashboard</h2>
+            <div class="text-muted">
+                Welcome, {{ officer_email }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Pending Complaints -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-warning text-dark collapse-header" data-bs-toggle="collapse" data-bs-target="#pendingComplaints" aria-expanded="true">
+                <h5 class="mb-0">
+                    Pending Complaints ({{ pending_complaints.count }})
+                </h5>
+            </div>
+            <div id="pendingComplaints" class="collapse show">
+                <div class="card-body dropdown-content">
+                    {% for complaint in pending_complaints %}
+                    <div class="card complaint-card pending mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ complaint.complaint_id }}</h6>
+                            <p class="card-text">{{ complaint.description|truncatewords:20 }}</p>
+                            <small class="text-muted">{{ complaint.created_at|date:"M d, Y H:i" }}</small>
+                            <div class="mt-2">
+                                <form method="post" action="{% url 'officers:update_complaint_status' complaint.id %}" class="status-form">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="Pending" selected>Pending</option>
+                                        <option value="Ongoing">Mark as Ongoing</option>
+                                        <option value="Completed">Mark as Completed</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No pending complaints.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ongoing Complaints -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-info text-white collapse-header" data-bs-toggle="collapse" data-bs-target="#ongoingComplaints" aria-expanded="true">
+                <h5 class="mb-0">
+                    Ongoing Complaints ({{ ongoing_complaints.count }})
+                </h5>
+            </div>
+            <div id="ongoingComplaints" class="collapse show">
+                <div class="card-body dropdown-content">
+                    {% for complaint in ongoing_complaints %}
+                    <div class="card complaint-card ongoing mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ complaint.complaint_id }}</h6>
+                            <p class="card-text">{{ complaint.description|truncatewords:20 }}</p>
+                            <small class="text-muted">{{ complaint.created_at|date:"M d, Y H:i" }}</small>
+                            <div class="mt-2">
+                                <form method="post" action="{% url 'officers:update_complaint_status' complaint.id %}" class="status-form">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="Pending">Mark as Pending</option>
+                                        <option value="Ongoing" selected>Ongoing</option>
+                                        <option value="Completed">Mark as Completed</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No ongoing complaints.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed Complaints -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white collapse-header" data-bs-toggle="collapse" data-bs-target="#completedComplaints" aria-expanded="true">
+                <h5 class="mb-0">
+                    Completed Complaints ({{ completed_complaints.count }})
+                </h5>
+            </div>
+            <div id="completedComplaints" class="collapse show">
+                <div class="card-body dropdown-content">
+                    {% for complaint in completed_complaints %}
+                    <div class="card complaint-card completed mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ complaint.complaint_id }}</h6>
+                            <p class="card-text">{{ complaint.description|truncatewords:20 }}</p>
+                            <small class="text-muted">{{ complaint.created_at|date:"M d, Y H:i" }}</small>
+                            <div class="mt-2">
+                                <form method="post" action="{% url 'officers:update_complaint_status' complaint.id %}" class="status-form">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="Pending">Mark as Pending</option>
+                                        <option value="Ongoing">Mark as Ongoing</option>
+                                        <option value="Completed" selected>Completed</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No completed complaints.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <strong>Note:</strong> Completed complaints are automatically deleted after 1 month.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers for collapse headers
+    const collapseHeaders = document.querySelectorAll('.collapse-header');
+    collapseHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const target = this.getAttribute('data-bs-target');
+            const collapse = new bootstrap.Collapse(document.querySelector(target));
+        });
+    });
+});
+</script>
+{% endblock %}
